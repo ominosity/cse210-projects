@@ -2,7 +2,7 @@
 ///     Name: Richard Burgener
 ///     Project: Scripture Memorizer
 ///     
-///     Exceeds: I created a Libary class to contain a library of scriptures
+///     Exceeds: I created a Library class to contain a library of scriptures
 ///              for memorization. To support the library, I added a startup
 ///              menu to choose to memorize or manage the library. 
 ///              
