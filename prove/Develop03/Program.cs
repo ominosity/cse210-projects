@@ -72,7 +72,13 @@ class Program
                 // Memorize a specific scripture
                 case 2:
                     {
-                        Scripture scripture = library.ChooseScripture();
+                        Scripture scripture = ChooseScripture(library);
+                        if (scripture == null)
+                        {
+                            Console.WriteLine("Invalid choice. Press any key to return to the menu.");
+                            Console.ReadKey(true);
+                        break;
+                        }
                         Memorizer memorizer = new Memorizer(scripture);
                         memorizer.MemorizeScripture();
                         break;
@@ -81,14 +87,40 @@ class Program
                 // Load a library from a file
                 case 3:
                     {
-                        library.ImportLibrary();
+                        if (!library.IsEmpty())
+                        {
+                            Console.WriteLine("Library is not empty. Overwrite current library (y/n)? ");
+                            ConsoleKeyInfo response = Console.ReadKey(true);
+                            if (response.Key != ConsoleKey.Y)
+                            {
+                                Console.WriteLine("Library load cancelled.");
+                                Console.WriteLine("Press any key to return to the menu.");
+                                Console.ReadKey(true);
+                                break;
+                            }
+                        }
+
+                        // Solicit a filename, then export library to the text file
+                        Console.Write("Please enter the filename to save. Libraries are stored in plain text (.txt) files: ");
+                        string filename = Console.ReadLine();
+
+                        string message = library.ImportLibrary(filename);
+                        Console.Write(message);
+                        Console.WriteLine("Press any key to return to the menu.");
+                        Console.ReadKey(true);
                         break;
                     }
 
                 // Save a library to a file
                 case 4:
                     {
-                        library.ExportLibrary();
+                        // Solicit a filename, then export library to the text file
+                        Console.Write("Please enter the filename to save. Libraries are stored in plain text (.txt) files: ");
+                        string filename = Console.ReadLine();
+                        string message = library.ExportLibrary(filename);
+                        Console.Write(message);
+                        Console.WriteLine("Press any key to return to the menu.");
+                        Console.ReadKey(true);
                         break;
                     }
 
@@ -179,13 +211,48 @@ class Program
                 // Remove a scripture from the current library
                 case 6:
                     {
-                        Scripture scripture = library.ChooseScripture();
-                        library.RemoveScripture(scripture.GetReference());
+                        Scripture scripture = ChooseScripture(library);
+                        string message = library.RemoveScripture(scripture.GetReference());
+                        Console.Write(message);
+                        Console.WriteLine("Press any key to return to the menu.");
+                        Console.ReadKey(true);
                         break;
                     }
             }
         } while (menuOption != 7);
 
         Console.WriteLine("Thank you for using the Scipture Memorizer program. Goodbye. ");
+    }
+
+    private static Scripture ChooseScripture(Library library)
+    {
+        List<Reference> referenceList = library.ListReferences();
+
+        // Store the user's choice
+        int choice = -1;
+        do
+        {
+            Console.WriteLine("Please choose a scripture from the following: ");
+            // Iterate through the reference list, starting at 1 instead of 0
+            for (int i = 0; i < referenceList.Count; i++)
+            {
+                Console.WriteLine($"\t{i + 1}: {referenceList[i].GetDisplayText()}");
+            }
+            try
+            {
+                // Solicit a choice from the user
+                Console.Write("Your choice: ");
+                choice = int.Parse(Console.ReadLine());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        } while (choice < 1 || choice > referenceList.Count);
+        // Return the indexed scripture. Note that the index is one less
+        // than the user choice
+        Scripture scripture = library.LoadScripture(referenceList[choice - 1]);
+        return scripture;
     }
 }

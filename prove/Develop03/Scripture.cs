@@ -32,7 +32,7 @@ public class Scripture
             }
         }
         // If fewer than numberToHide, hide all remaining
-        if (words.Count() < numberToHide)
+        if (words.Count < numberToHide)
         {
             foreach (Word word in words)
             {
@@ -44,7 +44,7 @@ public class Scripture
             // Otherwise, randomly hide numberToHide words
             for (int i = 0; i < numberToHide; i++)
             {
-                int newPickIndex = random.Next(words.Count());
+                int newPickIndex = random.Next(words.Count);
                 words[newPickIndex].Hide();
             }
         }

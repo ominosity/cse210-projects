@@ -72,101 +72,90 @@ public class Library
         _library.Add(reference, scripture);
     }
 
-    public void RemoveScripture(Reference reference)
+    public string RemoveScripture(Reference reference)
     {
-        // Do nothing is it isn't there
+        // Holds the return message(s)
+        StringBuilder sb = new StringBuilder();
+
+        // Do nothing if it isn't there
         if (!_library.ContainsKey(reference))
         {
-            return;
+            sb.AppendLine("Scripture not in library.");
         }
-        foreach (Reference key in _library.Keys)
+        else
         {
-
-            // Compare the lowercase text representation of the reference
-            if (key.GetDisplayText().ToString().ToLower() == reference.GetDisplayText().ToString().ToLower())
+            foreach (Reference key in _library.Keys)
             {
-                // Remove the scripture from the library
-                Reference chosenKey = _library[key].GetReference();
-                _library.Remove(reference);
-                Console.WriteLine($"{key} removed!");
-                Console.WriteLine("Press any key to return to the menu.");
-                Console.ReadKey(true);
-                return;
-            }
-        }
-    }
-
-    public void ExportLibrary()
-    {
-        if (_library.Count() == 0)
-        {
-            Console.WriteLine("Library is empty. Please import or add scriptures and try again.");
-            Console.ReadKey(true);
-            return;
-        }
-        // Solicit a filename, then export library to the text file
-        Console.Write("Please enter the filename to save. Libraries are stored in plain text (.txt) files: ");
-        string filename = Console.ReadLine();
-
-        try
-        {
-            // Write to file, one reference + delimiter + scripture per line
-            using (StreamWriter sw = new StreamWriter(filename))
-            {
-                foreach (Reference reference in _library.Keys)
+                // Compare the lowercase text representation of the reference
+                if (key.GetDisplayText().ToString().ToLower() == reference.GetDisplayText().ToString().ToLower())
                 {
-                    // Reset visibility prior to saving
-                    foreach (Scripture scripture in _library.Values)
-                    {
-                        scripture.ResetVisibility();
-                    }
-                    // Build the line to write, separating out parts of the reference
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(reference.GetBook());
-                    sb.Append(_delimiter);
-                    sb.Append(reference.GetChapter().ToString());
-                    sb.Append(_delimiter);
-                    sb.Append(reference.GetVerse().ToString());
-                    sb.Append(_delimiter);
-                    sb.Append(reference.GetEndVerse().ToString());
+                    // Remove the scripture from the library
+                    Reference chosenKey = _library[key].GetReference();
+                    _library.Remove(chosenKey);
 
-                    // Add the scripture text
-                    sb.Append(_delimiter);
-                    sb.Append(_library[reference].GetDisplayText());
-
-                    // Write everything to a new line in the file
-                    sw.WriteLine(sb.ToString());
+                    sb.AppendLine($"{key.GetDisplayText()} removed!");
                 }
             }
-
-            Console.WriteLine("File saved! Press any key to return to the menu.");
-            Console.ReadKey(true);
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine("" + ex.Message);
-        }
+        return sb.ToString();
     }
 
-    public void ImportLibrary()
+    public string ExportLibrary(string filename)
     {
-        if (_library.Count() != 0)
+        // Holds the return message(s)
+        StringBuilder sb = new StringBuilder();
+
+        // If the library is empty, don't export it
+        if (_library.Count == 0)
         {
-            Console.WriteLine("Library is not empty. Overwrite current library (y/n)? ");
-            ConsoleKeyInfo response = Console.ReadKey(true);
-            if (response.Key != ConsoleKey.Y)
-            {
-                Console.WriteLine("Library load cancelled.");
-                Console.WriteLine("Press any key to return to the menu.");
-                Console.ReadKey(true);
-                return;
-            }
+            sb.AppendLine("Library is empty. Please import or add scriptures and try again.");
         }
+        else
+        {
+            try
+            {
+                // Write to file, one reference + delimiter + scripture per line
+                using (StreamWriter sw = new StreamWriter(filename))
+                {
+                    foreach (Reference reference in _library.Keys)
+                    {
+                        // Reset visibility prior to saving
+                        foreach (Scripture scripture in _library.Values)
+                        {
+                            scripture.ResetVisibility();
+                        }
+                        // Build the line to write, separating out parts of the reference
+                        StringBuilder scriptureBuilder = new StringBuilder();
+                        scriptureBuilder.Append(reference.GetBook());
+                        scriptureBuilder.Append(_delimiter);
+                        scriptureBuilder.Append(reference.GetChapter());
+                        scriptureBuilder.Append(_delimiter);
+                        scriptureBuilder.Append(reference.GetVerse());
+                        scriptureBuilder.Append(_delimiter);
+                        scriptureBuilder.Append(reference.GetEndVerse());
 
-        // Solicit a filename, then export library to the text file
-        Console.Write("Please enter the filename to save. Libraries are stored in plain text (.txt) files: ");
-        string filename = Console.ReadLine();
+                        // Add the scripture text
+                        scriptureBuilder.Append(_delimiter);
+                        scriptureBuilder.Append(_library[reference].GetDisplayText());
 
+                        // Write everything to a new line in the file
+                        sw.WriteLine(scriptureBuilder.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                sb.Append("" + ex.Message);
+            }
+            sb.AppendLine($"\nFile ({filename}) saved.");
+        }
+        return sb.ToString();
+    }
+
+    public string ImportLibrary(string filename)
+    {
+        // Holds the return message(s)
+        StringBuilder sb = new StringBuilder();
         try
         {
             // Empty the library
@@ -174,73 +163,49 @@ public class Library
 
             using (StreamReader sr = new StreamReader(filename))
             {
-
-                string newScripture = sr.ReadLine();
-                // Split incoming stream by delimiter
-                string[] scriptureArray = newScripture.Split(_delimiter);
-
-                try
+                string newScripture;
+                while ((newScripture = sr.ReadLine()) != null)
                 {
-                    // Based on position in array, create Scripture and Reference components
-                    string book = scriptureArray[0];
-                    int chapter = int.Parse(scriptureArray[1]);
-                    int verse = int.Parse(scriptureArray[2]);
-                    int endVerse = int.Parse(scriptureArray[3]);
-                    string text = scriptureArray[4];
 
-                    Reference reference = new Reference(book, chapter, verse, endVerse);
-                    Scripture scripture = new Scripture(reference, text);
-                    AddScripture(reference, scripture);
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Error in file. Cannot load library.");
-                    return;
+                    // Split incoming stream by delimiter
+                    string[] scriptureArray = newScripture.Split(_delimiter);
+
+                    try
+                    {
+                        // Based on position in array, create Scripture and Reference components
+                        string book = scriptureArray[0];
+                        int chapter = int.Parse(scriptureArray[1]);
+                        int verse = int.Parse(scriptureArray[2]);
+                        int endVerse = int.Parse(scriptureArray[3]);
+                        string text = scriptureArray[4];
+
+                        Reference reference = new Reference(book, chapter, verse, endVerse);
+                        Scripture scripture = new Scripture(reference, text);
+                        AddScripture(reference, scripture);
+                    }
+                    catch (Exception)
+                    {
+                        sb.AppendLine("Error in file. Cannot load library.");
+                        return sb.ToString();
+                    }
                 }
             }
-            Console.WriteLine("Library loaded!");
+            sb.AppendLine("Library loaded!");
         }
         catch (Exception ex)
         {
-            Console.WriteLine("" + ex.Message);
+            sb.AppendLine("" + ex.Message);
         }
-        Console.WriteLine("Press any key to return to the menu.");
-        Console.ReadKey(true);
-        return;
+        return sb.ToString();
     }
 
 
-    public Scripture ChooseScripture()
-    {
-        List<Reference> referenceList = ListReferences();
+    // public Scripture ChooseScripture()
+    // {
 
-        // Store the user's choice
-        int choice = -1;
-        do
-        {
-            Console.WriteLine("Please choose a scripture from the following: ");
-            // Iterate through the reference list, starting at 1 instead of 0
-            for (int i = 0; i < referenceList.Count(); i++)
-            {
-                Console.WriteLine($"\t{i + 1}: {referenceList[i].GetDisplayText()}");
-            }
-            try
-            {
-                // Solicit a choice from the user
-                Console.Write("Your choice: ");
-                choice = int.Parse(Console.ReadLine());
-            }
-            catch (Exception)
-            {
+    // }
 
-            }
-        } while (choice < 1 || choice > referenceList.Count());
-        // Return the indexed scripture. Note that the index is one less
-        // than the user choice
-        return LoadScripture(referenceList[choice - 1]);
-    }
-
-    private List<Reference> ListReferences()
+    public List<Reference> ListReferences()
     {
         // Create a reference list
         List<Reference> referenceList = new List<Reference>();
@@ -259,5 +224,17 @@ public class Library
             }
         }
         return referenceList;
+    }
+
+    public bool IsEmpty()
+    {
+        if (_library.Count == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
