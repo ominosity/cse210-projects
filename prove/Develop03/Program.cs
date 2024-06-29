@@ -1,8 +1,3 @@
-
-using System.ComponentModel.Design;
-using System.Xml;
-using Microsoft.Win32.SafeHandles;
-
 /// <summary>
 ///     Name: Richard Burgener
 ///     Project: Scripture Memorizer

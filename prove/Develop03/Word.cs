@@ -39,7 +39,7 @@ class Word
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < _text.Length; i++)
         {
-            sb.Append("_");
+            sb.Append('_');
         }
         return sb.ToString();
     }
