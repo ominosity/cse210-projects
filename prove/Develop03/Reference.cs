@@ -1,4 +1,4 @@
-class Reference
+public class Reference
 {
     private string _book;
     private int _chapter;
@@ -33,5 +33,25 @@ class Reference
         {
             return $"{_book} {_chapter}: {_verse}-{_endVerse}";
         }
+    }
+
+    public string GetBook()
+    {
+        return _book;
+    }
+
+    public int GetChapter()
+    {
+        return _chapter;
+    }
+
+    public int GetVerse()
+    {
+        return _verse;
+    }
+
+    public int GetEndVerse()
+    {
+        return _endVerse;
     }
 }

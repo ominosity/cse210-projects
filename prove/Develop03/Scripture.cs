@@ -1,10 +1,10 @@
 using System.Text;
 
-class Scripture
+public class Scripture
 {
     private List<Word> _words;
     private Reference _reference;
-    public Scripture(Reference reference, string text) 
+    public Scripture(Reference reference, string text)
     {
         // Store the reference item
         _reference = reference;
@@ -21,14 +21,32 @@ class Scripture
     public void HideRandomWords(int numberToHide)
     {
         Random random = new Random();
-        
-        // Pick a random index of the List<Word) and 
-        // hide it. Repeat until the right number are
-        // hidden/ 
-        for (int i = 0; i < numberToHide; i++)
+
+        // Get a list of words that are still visible
+        List<Word> words = new List<Word>();
+        foreach (Word word in _words)
         {
-            int newPickIndex = random.Next(_words.Count());
-            _words[newPickIndex].Hide();
+            if (!word.IsHidden())
+            {
+                words.Add(word);
+            }
+        }
+        // If fewer than numberToHide, hide all remaining
+        if (words.Count() < numberToHide)
+        {
+            foreach (Word word in words)
+            {
+                word.Hide();
+            }
+        }
+        else
+        {
+            // Otherwise, randomly hide numberToHide words
+            for (int i = 0; i < numberToHide; i++)
+            {
+                int newPickIndex = random.Next(words.Count());
+                words[newPickIndex].Hide();
+            }
         }
     }
 
@@ -55,12 +73,28 @@ class Scripture
         {
             // If the word is visible, there are words left
             // to hide. 
-            if (!word.IsHidden()) 
+            if (!word.IsHidden())
             {
                 return false;
             }
         }
         // If we get here, no visible words were found. 
         return true;
+    }
+
+    public Reference GetReference()
+    {
+        return _reference;
+    }
+
+    /// <summary>
+    ///     Reset the default so all words are visible
+    /// </summary>
+    public void ResetVisibility()
+    {
+        foreach (Word word in _words)
+        {
+            word.Show();
+        }
     }
 }
