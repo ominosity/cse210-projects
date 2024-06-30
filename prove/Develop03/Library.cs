@@ -199,12 +199,6 @@ public class Library
         return sb.ToString();
     }
 
-
-    // public Scripture ChooseScripture()
-    // {
-
-    // }
-
     public List<Reference> ListReferences()
     {
         // Create a reference list
