@@ -1,13 +1,16 @@
 
-using Microsoft.Win32.SafeHandles;
-
 /// <summary>
 ///     Name: Richard Burgener
 ///     Project: Mindfulness Activities
 ///     
-///     Exceeds: I updated the countdown timer to handle any int-range number, not just 9 seconds
-///     
+///     Exceeds: I updated the countdown timer to handle any int-range number, not just 9 seconds.
 ///              
+///              I updated the spinner and countdown to hide the cursor while animating.
+///              
+///              I set up the prompts to keep track of whether or not they've been used, so they
+///              only repeat after all of them have been used once. 
+///              
+///              I did the same with the question prompts on the reflecting activity.
 /// </summary>
 class Program
 {
@@ -54,6 +57,7 @@ class Program
             Console.WriteLine("\t4. Quit");
             Console.Write("Select a choice from the menu: ");
             
+            // Deal with invalid responses
             try
             {
                 choice = int.Parse(Console.ReadLine());
@@ -65,6 +69,8 @@ class Program
                 Console.ReadKey(true);
                 continue;
             }
+
+            // Choose. But choose wisely...
             switch (choice)
             {
                 // Option 1 - Breathing Activity
@@ -102,5 +108,7 @@ class Program
             }
         } while (choice != 4);
 
+        Console.WriteLine("Thank you for using the Mindfulness Program!");
+        Console.WriteLine("Have a serene and wonderful day.");
     }
 }

@@ -73,6 +73,9 @@ public class Activity
             "\\"
         };
 
+        // Hide cursor during animation 
+        Console.CursorVisible = false;
+
         // Repeat based on the number of seconds given
         for (int i = 0; i < seconds; i++)
         {
@@ -85,6 +88,9 @@ public class Activity
                 Console.Write("\b \b");
             }
         }
+
+        // Animation over - show cursor
+        Console.CursorVisible = true;
     }
 
 
@@ -94,6 +100,9 @@ public class Activity
     /// <param name="seconds">The number of seconds to count down from</param>
     public void ShowCountDown(int seconds)
     {
+        // Hide the cursor during the countdown
+        Console.CursorVisible = false;
+
         for (int i = seconds; i > 0; i--)
         {
             // Determine how many characters are in the second count
@@ -103,11 +112,14 @@ public class Activity
             string backspaces = new string ('\b', secondsLength);
             string spaces = new string(' ', secondsLength);
 
-            // Write and overwrit seconds remaining
+            // Write and overwrite seconds remaining
             Console.Write(i);
             Thread.Sleep(1000);
             Console.Write($"{backspaces}{spaces}{backspaces}");
         }
+
+        // Countdown complete - show cursor 
+        Console.CursorVisible = true;
     }
 
     /// <summary>
