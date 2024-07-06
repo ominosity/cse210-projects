@@ -3,7 +3,7 @@
 ///     Name: Richard Burgener
 ///     Project: Mindfulness Activities
 ///     
-///     Exceeds: I updated the countdown timer to handle any int-range number, not just 9 seconds.
+///     Exceeds: I updated the countdown timer to handle any int-range number, not just single digits (<= 9 seconds).
 ///              
 ///              I updated the spinner and countdown to hide the cursor while animating.
 ///              
