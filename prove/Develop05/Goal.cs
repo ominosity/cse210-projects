@@ -1,21 +1,41 @@
 public abstract class Goal 
 {
-    private string _shortName ;
-    private string _description ;
-    private int _points ;
+    private string _shortName;
+    private string _description;
+    private int _points;
+
+    protected const string Delimiter = "|~|";
 
     public Goal (string name, string description, int points)
     {
-        _description = description ;
-        _points = points ;
-        _shortName = name ;
+        _description = description;
+        _points = points;
+        _shortName = name;
     }
 
-    public abstract void RecordEvent() ;
-    public abstract bool IsComplete() ;
+    public abstract void RecordEvent();
+    public abstract bool IsComplete();
     public virtual string GetDetailsString() 
     {
-        throw new NotImplementedException();
+        string details = $"{_shortName} ({_description})";
+        return details; 
     }
-    public abstract string GetStringRepresentation() ;
+    public virtual string GetStringRepresentation()
+    {
+        string representation = $"{_shortName}{Delimiter}{_description}{Delimiter}{_points}";
+        return representation;
+    }
+
+    public string GetName()
+    {
+        return _shortName;
+    }
+    public static string GetDelimiter()
+    {
+        return Delimiter;
+    }
+
+    public virtual int GetPointValue() {
+        return _points;
+    }
 }

@@ -8,29 +8,29 @@ public class EternalGoal : Goal
     /// the goal</param>
     /// <param name="points">The number of points awarded
     /// upon completion of the goal </param>
-    public EternalGoal(string name, string description, int points) 
+    public EternalGoal(string name, string description, int points)
         : base(name, description, points)
     {
         // No initialization needed
     }
 
     /// <summary>
-    /// Records the event as completed and updates score
-    /// </summary>    
+    /// Records the event as completed
+    /// </summary> 
     public override void RecordEvent()
     {
-        throw new NotImplementedException();
+        // Eternal goals are never completed
     }
 
     /// <summary>
     /// Indicates whether the goal has been completed
     /// </summary>
-    /// <returns>True if the goal has been completed, 
-    /// false otherwise
+    /// <returns>
+    /// false - Eternal Goals are never completed
     /// </returns>
     public override bool IsComplete()
     {
-        throw new NotImplementedException();
+        return false;
     }
 
     /// <summary>
@@ -41,6 +41,7 @@ public class EternalGoal : Goal
     /// </returns>
     public override string GetStringRepresentation()
     {
-        throw new NotImplementedException();
+        string representation = $"{GetType()}{Delimiter}{base.GetStringRepresentation()}";
+        return representation;
     }
 }

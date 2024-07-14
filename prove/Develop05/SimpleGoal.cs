@@ -1,6 +1,6 @@
 public class SimpleGoal : Goal
 {
-    private bool _isComplete ;
+    private bool _isComplete;
 
     /// <summary>
     /// Creates a Simple Goal
@@ -17,11 +17,26 @@ public class SimpleGoal : Goal
     }
 
     /// <summary>
-    /// Records the event as completed and updates score
+    /// Creates a Simple Goal with knowledge of whether or not it's been completed 
+    /// </summary>
+    /// <param name="name">The name of the goal</param>
+    /// <param name="description">A brief description of 
+    /// the goal</param>
+    /// <param name="points">The number of points awarded
+    /// upon completion of the goal </param>
+    /// <param name="completed">Boolean true or false whether goal has been completed
+    public SimpleGoal (string name, string description, int points, bool completed) 
+        : base (name, description, points)
+    {
+        _isComplete = completed; 
+    }
+
+    /// <summary>
+    /// Records the event as completed
     /// </summary>
     public override void RecordEvent()
     {
-        throw new NotImplementedException();
+        _isComplete = true;
     }
 
     /// <summary>
@@ -32,7 +47,7 @@ public class SimpleGoal : Goal
     /// </returns>
     public override bool IsComplete()
     {
-        throw new NotImplementedException();
+        return _isComplete;
     }
 
     /// <summary>
@@ -43,6 +58,7 @@ public class SimpleGoal : Goal
     /// </returns>
     public override string GetStringRepresentation()
     {
-        throw new NotImplementedException();
+        string representation = $"{GetType()}{Delimiter}{base.GetStringRepresentation()}{Delimiter}{_isComplete}";
+        return representation;
     }
 }
