@@ -29,8 +29,8 @@ class Program
         // Create the second order's products
         Product product4 = new Product("Stanley Quencher H2.0 Tumbler with Handle 40 oz", 6579, 45.00, 1);
         Product product5 = new Product("Ice Cube Tray Mold for Stanly 40oz", 98765, 9.99, 2);
-        Product product6 = new Product("Silicone Straw Covers and Caps - Cats - for Stanly Tumblers", 98735, 6.29, 1);
-        Product product7 = new Product("Insefocc Stanly Cup 40oz Snack Bowl with Handle", 359846, 6.29, 1);
+        Product product6 = new Product("Silicone Straw Covers and Caps - Cats - for Stanley Tumblers", 98735, 6.29, 1);
+        Product product7 = new Product("Insefocc Stanley Cup 40oz Snack Bowl with Handle", 359846, 6.29, 1);
 
         // Add the second order's products to the order
         order2.AddProduct(product4);
@@ -48,7 +48,7 @@ class Program
 
         // Create a delimiter between the orders
         Console.WriteLine("----------------------------------------------------------------");
-        
+
         // Print the packing label, the shipping label, and the total price of the second order
         Console.WriteLine(order2.GetShippingLabel());
         Console.WriteLine(order2.GetPackingLabel());
