@@ -34,7 +34,7 @@ public class OutdoorGathering : Event
     public override string GetFullDetails()
     {
         string fullDetails = base.GetStandardDetails();
-        fullDetails += $"\nWeather Forecase: {_weatherForecast}";
+        fullDetails += $"\nWeather Forecast: {_weatherForecast}";
         return fullDetails;
     }
 }

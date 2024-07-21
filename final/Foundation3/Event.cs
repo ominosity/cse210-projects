@@ -34,7 +34,7 @@ public abstract class Event
     /// Title, description, date and time, address</returns>
     public string GetStandardDetails()
     {
-        string details = $"{_title}\n{_description}\n{_date} {_time}\n{_address.GetFormattedAddress()};";
+        string details = $"{_title}\n{_description}\n{_date} {_time}\n\n{_address.GetFormattedAddress()}";
         return details;
     }
 
