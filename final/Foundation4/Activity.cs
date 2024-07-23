@@ -38,10 +38,10 @@ public abstract class Activity
     {
         StringBuilder sb = new StringBuilder();
         sb.Append($"{GetExerciseDateString()} ");
-        sb.Append($"{activityType} ({GetMinutesExercised()}): ");
-        sb.Append($"Distance {Math.Round(GetDistance(), 1)} miles, ");
-        sb.Append($"Speed {Math.Round(GetSpeed(), 1)} mph");
-        sb.Append($"Pace {Math.Round(GetPace(), 2)} min per mile");
+        sb.Append($"{activityType} ({GetMinutesExercised()} min): ");
+        sb.Append($"Distance {Math.Round(GetDistance(), 1).ToString("N1")} miles, ");
+        sb.Append($"Speed {Math.Round(GetSpeed(), 1)} mph, ");
+        sb.Append($"Pace {Math.Round(GetPace(), 2).ToString("N2")} min per mile");
 
         return sb.ToString();
     }

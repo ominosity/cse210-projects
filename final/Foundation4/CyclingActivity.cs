@@ -33,7 +33,7 @@ public class CyclingActivity : Activity
     /// <returns>A double representing the number of miles cycled</returns>
     public override double GetDistance()
     {
-        return _speed * base.GetMinutesExercised();
+        return _speed * base.GetMinutesExercised() / 60;
     }
 
     /// <summary>
