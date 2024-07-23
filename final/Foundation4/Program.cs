@@ -7,13 +7,13 @@ class Program
         DateTime runningDateTime = new DateTime(2024, 07, 23, 18, 00, 00);
         DateTime swimmingDateTime = new DateTime(2024, 07, 24, 7, 15, 30);
 
-        int cyclingMinutes = 30;
+        int cyclingMinutes = 45;
         int runningMinutes = 30;
-        int swimmingMinutes = 30;
+        int swimmingMinutes = 40;
 
-        double cyclingSpeed = 6;
+        double cyclingSpeed = 10;
         double runningDistance = 3;
-        int swimmingLaps = 96;
+        int swimmingLaps = 25;
 
         // Create the three activities
         CyclingActivity cyclingActivity = new CyclingActivity(cyclingDateTime, cyclingMinutes, cyclingSpeed);
